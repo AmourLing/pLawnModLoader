@@ -15,4 +15,10 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Page Update="pLModsConfigWindow\JsonEditWindow\JsonEditWindow.xaml">
+	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	  </Page>
+	</ItemGroup>
+
 </Project>

@@ -31,6 +31,7 @@ namespace LargerSeedBank
 
             var harmony = new Harmony("net.pvz.largerseedbank");
             harmony.PatchAll(typeof(pLMods).Assembly);
+            Log.Info("[LargerSeedBank] Patch applied successfully");
         }
 
         [HarmonyPatch(typeof(SeedBank), MethodType.Constructor)]

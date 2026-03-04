@@ -30,32 +30,7 @@ namespace LargerImitaterDialog
             }
 
             var harmony = new Harmony("net.pvz.largerimitaterdialog");
-
-            Type imitaterDialogType = Type.GetType("Lawn.ImitaterDialog, Lawn");
-            if (imitaterDialogType == null)
-            {
-                Log.Error("[LargerImitaterDialog] Failed to find type Lawn.ImitaterDialog");
-                return;
-            }
-
-            ConstructorInfo ctor = imitaterDialogType.GetConstructor(
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                null, Type.EmptyTypes, null);
-            if (ctor == null)
-            {
-                Log.Error("[LargerImitaterDialog] Failed to find constructor for ImitaterDialog");
-                return;
-            }
-
-            MethodInfo transpiler = typeof(ImitaterDialog_Ctor_Patch).GetMethod(
-                "Transpiler", BindingFlags.Static | BindingFlags.Public);
-            if (transpiler == null)
-            {
-                Log.Error("[LargerImitaterDialog] Failed to find Transpiler method");
-                return;
-            }
-
-            harmony.Patch(ctor, transpiler: new HarmonyMethod(transpiler));
+            harmony.PatchAll(typeof(pLMods).Assembly);
             Log.Info("[LargerImitaterDialog] Patch applied successfully");
         }
 
