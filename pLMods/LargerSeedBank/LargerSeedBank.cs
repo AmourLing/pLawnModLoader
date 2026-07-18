@@ -4,6 +4,7 @@ using Sexy;
 using System.Reflection;
 using System.Reflection.Emit;
 using pLawnModLoader;
+using pLawnModLoader_Shared;
 
 namespace LargerSeedBank
 {
@@ -107,14 +108,14 @@ namespace LargerSeedBank
                         return true;
                     }
 
-                    int num = Constants.SMALL_SEEDPACKET_HEIGHT * 88 / 10 / aNumPackets;
+                    int num = Sexy.Constants.SMALL_SEEDPACKET_HEIGHT * 88 / 10 / aNumPackets;
 
-                    if (!__instance.HasConveyorBeltSeedBank() && !Constants.Is500pMode)
+                    if (!__instance.HasConveyorBeltSeedBank() && !Sexy.Constants.Is500pMode)
                     {
                         num += 10;
                     }
 
-                    int offset = (!__instance.HasConveyorBeltSeedBank() && !Constants.Is500pMode) ? 20 : 0;
+                    int offset = (!__instance.HasConveyorBeltSeedBank() && !Sexy.Constants.Is500pMode) ? 20 : 0;
                     __result = theIndex * num + offset;
 
                     return false;

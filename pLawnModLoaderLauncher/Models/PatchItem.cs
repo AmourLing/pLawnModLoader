@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel;
+using System.IO;
 
 namespace pLawnModLoaderLauncher.Models
 {
     public class PatchItem : INotifyPropertyChanged
     {
+        public string DllPath => Path.Combine(SourcePath, PatchName + ".dll");
         private string _name;
+
         public string PatchName
         {
             get => _name;
@@ -12,6 +15,7 @@ namespace pLawnModLoaderLauncher.Models
         }
 
         private bool _isEnabled;
+
         public bool IsEnabled
         {
             get => _isEnabled;
@@ -21,6 +25,7 @@ namespace pLawnModLoaderLauncher.Models
         public string SourcePath { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged(string name) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using pLawnModLoader;
+using pLawnModLoader_Shared;
 
 namespace pLawnModLoader
 {
@@ -20,14 +21,18 @@ namespace pLawnModLoader
                     return File.Exists(path) ? Assembly.LoadFrom(path) : null;
                 };
 
-                string modsDir = Path.Combine(gameDir, "pLMods");
+                string modsDir = Path.Combine(gameDir, Constants.ModLoaderFolder, Constants.ModsFolder);
                 if (!Directory.Exists(modsDir))
                     Directory.CreateDirectory(modsDir);
 
                 int total = 0, loaded = 0, skipped = 0, failed = 0;
 
-                foreach (string dllPath in Directory.GetFiles(modsDir, "*.dll"))
+                foreach (string modFolder in Directory.GetDirectories(modsDir))
                 {
+                    string modName = Path.GetFileName(modFolder);
+                    Log.Info($"当前文件夹为 {modName}");
+                    string dllPath = Directory.GetFiles(modFolder, "*.dll").FirstOrDefault();
+                    if (dllPath == null) continue;
                     total++;
                     try
                     {
@@ -38,26 +43,30 @@ namespace pLawnModLoader
                             MethodInfo applyMethod = patchesType.GetMethod("Apply", BindingFlags.Public | BindingFlags.Static);
                             if (applyMethod != null)
                             {
-                                Log.Info($"应用补丁: {Path.GetFileName(dllPath)}");
+                                Log.Info($"应用补丁中: {Path.GetFileName(dllPath)}");
                                 applyMethod.Invoke(null, null);
                                 loaded++;
+                                Log.Info($"应用补丁成功: {Path.GetFileName(dllPath)}", color: ConsoleColor.Green);
                             }
                             else
                             {
                                 Log.Warning($"补丁类 pLMods 缺少 Apply 方法: {Path.GetFileName(dllPath)}");
                                 skipped++;
+                                continue;
                             }
                         }
                         else
                         {
                             Log.Warning($"忽略非补丁 DLL: {Path.GetFileName(dllPath)}");
                             skipped++;
+                            continue;
                         }
                     }
                     catch (Exception ex)
                     {
                         Log.Error($"加载补丁 {Path.GetFileName(dllPath)} 失败", ex);
                         failed++;
+                        continue;
                     }
                 }
 

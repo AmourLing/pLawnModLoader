@@ -13,7 +13,7 @@
 		<GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
 		<GenerateDocumentationFile>false</GenerateDocumentationFile>
 
-		<OutputPath>..\..\Launcher\pLMod\</OutputPath>
+		<OutputPath>..\..\Launcher\pLMod\$(AssemblyName)\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AssemblyName>LargerSeedBank</AssemblyName>
@@ -38,6 +38,7 @@
 		<ProjectReference Include="..\..\pLawnModLoader\pLawnModLoader.csproj">
 			<Private>false</Private>
 		</ProjectReference>
+		<ProjectReference Include="..\..\pLawnModLoader_Shared\pLawnModLoader_Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -48,7 +49,7 @@
 
 	<Target Name="CleanExtraFiles" AfterTargets="Build">
 		<ItemGroup>
-			<FilesToDelete Include="Lawn.pdb"/>
+			<FilesToDelete Include="Lawn.pdb" />
 			<FilesToDelete Include="$(OutputPath)*.json" />
 			<FilesToDelete Include="$(OutputPath)*.xml" />
 		</ItemGroup>

@@ -2,13 +2,14 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using pLawnModLoader_Shared;
 
 namespace pLawnModLoaderLauncher.Services
 {
     public class PatchManager
     {
         private readonly string _sourceFolder;
-        private readonly string _targetFolder = "pLMods";
+        private readonly string _targetFolder = Constants.ModLoaderFolder;
 
         public ObservableCollection<PatchItem> Patches { get; } = new();
 
@@ -20,21 +21,22 @@ namespace pLawnModLoaderLauncher.Services
         public void ScanPatches()
         {
             Patches.Clear();
-
             if (!Directory.Exists(_sourceFolder))
             {
                 Directory.CreateDirectory(_sourceFolder);
                 return;
             }
 
-            var dllFiles = Directory.GetFiles(_sourceFolder, "*.dll", SearchOption.TopDirectoryOnly);
-            foreach (var dll in dllFiles)
+            foreach (string subDir in Directory.GetDirectories(_sourceFolder))
             {
-                var name = Path.GetFileNameWithoutExtension(dll);
+                string patchName = Path.GetFileName(subDir);
+                string dllPath = Path.Combine(subDir, patchName + ".dll");
+                if (!File.Exists(dllPath))
+                    continue;
                 Patches.Add(new PatchItem
                 {
-                    PatchName = name,
-                    SourcePath = dll,
+                    PatchName = patchName,
+                    SourcePath = subDir,
                     IsEnabled = false
                 });
             }
@@ -45,19 +47,25 @@ namespace pLawnModLoaderLauncher.Services
             if (string.IsNullOrEmpty(gameDir) || !Directory.Exists(gameDir))
                 return false;
 
-            string targetDir = Path.Combine(gameDir, _targetFolder);
-            Directory.CreateDirectory(targetDir);
+            string targetRoot = Path.Combine(gameDir, Constants.ModLoaderFolder, Constants.ModsFolder);
+            Directory.CreateDirectory(targetRoot);
 
-            foreach (var file in Directory.GetFiles(targetDir))
-                File.Delete(file);
+            // 清空目标 mods 目录（避免残留）
+            foreach (var dir in Directory.GetDirectories(targetRoot))
+                Directory.Delete(dir, true);
 
             var enabled = Patches.Where(p => p.IsEnabled).ToList();
             foreach (var patch in enabled)
             {
-                string dest = Path.Combine(targetDir, Path.GetFileName(patch.SourcePath));
-                File.Copy(patch.SourcePath, dest, true);
-            }
+                string targetModDir = Path.Combine(targetRoot, patch.PatchName);
+                Directory.CreateDirectory(targetModDir);
 
+                foreach (string file in Directory.GetFiles(patch.SourcePath))
+                {
+                    string dest = Path.Combine(targetModDir, Path.GetFileName(file));
+                    File.Copy(file, dest, true);
+                }
+            }
             return true;
         }
 

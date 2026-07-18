@@ -16,9 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="pLModsConfigWindow\JsonEditWindow\JsonEditWindow.xaml">
-	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-	  </Page>
+	  <ProjectReference Include="..\pLawnModLoader_Shared\pLawnModLoader_Shared.csproj" />
 	</ItemGroup>
 
 </Project>

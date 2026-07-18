@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using pLawnModLoader_Shared;
 
 namespace pLawnModLoaderLauncher
 {
@@ -18,6 +19,7 @@ namespace pLawnModLoaderLauncher
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _key;
+
         public string Key
         {
             get => _key;
@@ -25,6 +27,7 @@ namespace pLawnModLoaderLauncher
         }
 
         private string _value;
+
         public string Value
         {
             get => _value;
@@ -32,6 +35,7 @@ namespace pLawnModLoaderLauncher
         }
 
         private string _type;
+
         public string Type
         {
             get => _type;
@@ -96,33 +100,26 @@ namespace pLawnModLoaderLauncher
         {
             _configItems.Clear();
 
-            string configFilePath = Path.Combine(_gameDir, "pLMods", "config", "pLawnModLoaderConfig.json");
-            if (!File.Exists(configFilePath))
+            string configPath = Path.Combine(_gameDir, Constants.ModLoaderFolder, Constants.ModsFolder, _patchName, $"{_patchName}.config.json");
+            if (!File.Exists(configPath))
                 return;
 
-            try
+            string json = File.ReadAllText(configPath);
+            var root = JObject.Parse(json);
+
+            // 不再使用 root[_patchName]，直接枚举 root 的属性
+            foreach (var prop in root.Properties())
             {
-                string json = File.ReadAllText(configFilePath);
-                var root = JObject.Parse(json);
-                if (root[_patchName] is JObject patchConfig)
-                {
-                    foreach (var prop in patchConfig.Properties())
-                    {
-                        string key = prop.Name;
-                        JToken value = prop.Value;
-                        string type = DetermineType(value);
-                        string stringValue = value.ToString();
+                string key = prop.Name;
+                JToken value = prop.Value;
+                string type = DetermineType(value);
+                string stringValue = value.ToString();
 
-                        if (type == "bool")
-                        {
-                            stringValue = stringValue.ToLowerInvariant();
-                        }
+                if (type == "bool")
+                    stringValue = stringValue.ToLowerInvariant();
 
-                        _configItems.Add(new ConfigItem { Key = key, Value = stringValue, Type = type });
-                    }
-                }
+                _configItems.Add(new ConfigItem { Key = key, Value = stringValue, Type = type });
             }
-            catch { }
         }
 
         private string DetermineType(JToken token)
@@ -228,32 +225,24 @@ namespace pLawnModLoaderLauncher
                             else
                                 valueToken = new JValue(item.Value);
                             break;
+
                         case "bool":
                             if (bool.TryParse(item.Value, out bool boolVal))
                                 valueToken = new JValue(boolVal);
                             else
                                 valueToken = new JValue(false);
                             break;
+
                         case "object":
-                            try
-                            {
-                                valueToken = JObject.Parse(item.Value);
-                            }
-                            catch
-                            {
-                                valueToken = new JValue(item.Value);
-                            }
+                            try { valueToken = JObject.Parse(item.Value); }
+                            catch { valueToken = new JValue(item.Value); }
                             break;
+
                         case "array":
-                            try
-                            {
-                                valueToken = JArray.Parse(item.Value);
-                            }
-                            catch
-                            {
-                                valueToken = new JValue(item.Value);
-                            }
+                            try { valueToken = JArray.Parse(item.Value); }
+                            catch { valueToken = new JValue(item.Value); }
                             break;
+
                         default:
                             valueToken = new JValue(item.Value);
                             break;
@@ -261,25 +250,18 @@ namespace pLawnModLoaderLauncher
                     patchConfig[item.Key] = valueToken;
                 }
 
-                string configFilePath = Path.Combine(_gameDir, "pLMods", "config", "pLawnModLoaderConfig.json");
-                JObject root;
-                if (File.Exists(configFilePath))
+                // 如果没有任何配置项，可提示用户
+                if (patchConfig.Count == 0)
                 {
-                    string json = File.ReadAllText(configFilePath);
-                    root = JObject.Parse(json);
-                }
-                else
-                {
-                    root = new JObject();
+                    if (MessageBox.Show("当前没有配置项，是否保存空配置？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                        return;
                 }
 
-                root[_patchName] = patchConfig;
+                string configDir = Path.Combine(_gameDir, Constants.ModLoaderFolder, Constants.ModsFolder, _patchName);
+                Directory.CreateDirectory(configDir);
+                string configFilePath = Path.Combine(configDir, $"{_patchName}.config.json");
 
-                string configDir = Path.GetDirectoryName(configFilePath);
-                if (!Directory.Exists(configDir))
-                    Directory.CreateDirectory(configDir);
-
-                File.WriteAllText(configFilePath, root.ToString(Formatting.Indented));
+                File.WriteAllText(configFilePath, patchConfig.ToString(Formatting.Indented));
 
                 MessageBox.Show("配置已保存。", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
                 DialogResult = true;

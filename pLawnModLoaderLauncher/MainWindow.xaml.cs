@@ -11,11 +11,112 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using pLawnModLoader_Shared;
 
 namespace pLawnModLoaderLauncher
 {
     public partial class MainWindow : Window
-    {
+    {// 打开补丁文件夹（打开 pLawnModLoader/mods）
+        private void OpenModsFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidateGamePath()) return;
+
+            string targetGameDir = Path.GetDirectoryName(GamePathTextBox.Text);
+            if (string.IsNullOrEmpty(targetGameDir) || !Directory.Exists(targetGameDir))
+            {
+                MessageBox.Show("游戏目录无效", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string modsFolder = Path.Combine(targetGameDir, Constants.ModLoaderFolder, Constants.ModsFolder);
+            if (!Directory.Exists(modsFolder))
+                Directory.CreateDirectory(modsFolder);
+
+            try
+            {
+                Process.Start("explorer.exe", modsFolder);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"打开文件夹失败：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // 显示说明（传入目录）
+        private void ShowPatchReadme_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is string patchPath)
+            {
+                ShowReadme(patchPath, "补丁");
+            }
+        }
+
+        private void ShowReadme(string directory, string type)
+        {
+            try
+            {
+                string patchName = Path.GetFileName(directory);
+                string[] possibleReadmeFiles = new[]
+                {
+            patchName + ".txt",
+            patchName + ".md",
+            "readme.txt",
+            "README.txt",
+            "Readme.txt",
+            "说明.txt",
+            "使用说明.txt",
+            "README.md"
+        };
+
+                string readmePath = null;
+                foreach (var fileName in possibleReadmeFiles)
+                {
+                    var possiblePath = Path.Combine(directory, fileName);
+                    if (File.Exists(possiblePath))
+                    {
+                        readmePath = possiblePath;
+                        break;
+                    }
+                }
+
+                if (readmePath != null)
+                {
+                    var readmeWindow = new ReadmeWindow();
+                    readmeWindow.Owner = this;
+                    readmeWindow.Title = $"{type}说明 - {patchName}";
+                    readmeWindow.LoadReadme(readmePath);
+                    readmeWindow.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show($"未找到{type}说明文件。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"打开{type}说明时出错: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // 配置按钮：正确提取补丁名
+        private void ShowPatchConfig_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is string patchPath)
+            {
+                string gameDir = Path.GetDirectoryName(_config.CurrentScheme.GamePath);
+                if (string.IsNullOrEmpty(gameDir) || !Directory.Exists(gameDir))
+                {
+                    MessageBox.Show("游戏目录无效，请先选择有效的 Lawn.exe", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                string patchName = Path.GetFileName(patchPath); // 目录名
+                var configWindow = new pLModsConfigWindow(patchName, gameDir);
+                configWindow.Owner = this;
+                configWindow.ShowDialog();
+            }
+        }
+
         private readonly string _launcherBaseDir;
         private readonly string _sourcePatchDir;
         private readonly string _sourceModLoaderDir;
@@ -277,106 +378,6 @@ namespace pLawnModLoaderLauncher
                 string fileName = Path.GetFileName(file);
                 string dest = Path.Combine(targetDir, fileName);
                 File.Copy(file, dest, true);
-            }
-        }
-
-        private void OpenModsFolderButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!ValidateGamePath()) return;
-
-            string targetGameDir = Path.GetDirectoryName(GamePathTextBox.Text);
-            if (string.IsNullOrEmpty(targetGameDir) || !Directory.Exists(targetGameDir))
-            {
-                MessageBox.Show("游戏目录无效", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            string modsFolder = Path.Combine(targetGameDir, "pLMods");
-            if (!Directory.Exists(modsFolder))
-                Directory.CreateDirectory(modsFolder);
-
-            try
-            {
-                Process.Start("explorer.exe", modsFolder);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"打开文件夹失败：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void ShowPatchReadme_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is string patchPath)
-            {
-                ShowReadme(patchPath, "补丁");
-            }
-        }
-
-        private void ShowReadme(string filePath, string type)
-        {
-            try
-            {
-                string directory = Path.GetDirectoryName(filePath);
-                string patchName = Path.GetFileNameWithoutExtension(filePath);
-
-                string[] possibleReadmeFiles = new[]
-                {
-                    patchName + ".txt",
-                    patchName + ".md",
-                    "readme.txt",
-                    "README.txt",
-                    "Readme.txt",
-                    "说明.txt",
-                    "使用说明.txt",
-                    "README.md"
-                };
-
-                string readmePath = null;
-                foreach (var fileName in possibleReadmeFiles)
-                {
-                    var possiblePath = Path.Combine(directory, fileName);
-                    if (File.Exists(possiblePath))
-                    {
-                        readmePath = possiblePath;
-                        break;
-                    }
-                }
-
-                if (readmePath != null)
-                {
-                    var readmeWindow = new ReadmeWindow();
-                    readmeWindow.Owner = this;
-                    readmeWindow.Title = $"{type}说明 - {patchName}";
-                    readmeWindow.LoadReadme(readmePath);
-                    readmeWindow.ShowDialog();
-                }
-                else
-                {
-                    MessageBox.Show($"未找到{type}说明文件。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"打开{type}说明时出错: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void ShowPatchConfig_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is string patchPath)
-            {
-                string gameDir = Path.GetDirectoryName(_config.CurrentScheme.GamePath);
-                if (string.IsNullOrEmpty(gameDir) || !Directory.Exists(gameDir))
-                {
-                    MessageBox.Show("游戏目录无效，请先选择有效的 Lawn.exe", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                string patchName = Path.GetFileNameWithoutExtension(patchPath);
-                var configWindow = new pLModsConfigWindow(patchName, gameDir);
-                configWindow.Owner = this;
-                configWindow.ShowDialog();
             }
         }
 
