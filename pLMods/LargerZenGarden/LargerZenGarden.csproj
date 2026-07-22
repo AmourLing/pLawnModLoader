@@ -16,8 +16,8 @@
 		<OutputPath>..\..\Launcher\pLMod\$(AssemblyName)\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-		<AssemblyName>LargerSeedBank</AssemblyName>
-		<RootNamespace>LargerSeedBank</RootNamespace>
+		<AssemblyName>LargerZenGarden</AssemblyName>
+		<RootNamespace>LargerZenGarden</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

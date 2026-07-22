@@ -1,4 +1,4 @@
-﻿using pLawnModLoaderLauncher.Models;
+using pLawnModLoaderLauncher.Models;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;

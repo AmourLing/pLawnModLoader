@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using Lawn;
 using Sexy;
 using System.Reflection;

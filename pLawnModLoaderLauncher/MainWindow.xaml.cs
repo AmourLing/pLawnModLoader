@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using pLawnModLoaderLauncher.Config;
 using pLawnModLoaderLauncher.Helpers;
 using pLawnModLoaderLauncher.Models;

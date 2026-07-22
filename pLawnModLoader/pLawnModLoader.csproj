@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -16,8 +16,6 @@
 		<PackageReference Include="Lib.Harmony" Version="2.4.2" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\pLawnModLoader_Shared\pLawnModLoader_Shared.csproj" />
-	</ItemGroup>
+	<Import Project="..\pLawnModLoader_Shared\pLawnModLoader_Shared.projitems" Label="Shared" />
 
 </Project>

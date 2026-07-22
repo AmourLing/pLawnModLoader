@@ -1,51 +1,51 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Platforms>x64</Platforms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Platforms>x64</Platforms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 
-    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
-    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <GenerateDependencyFile>false</GenerateDependencyFile>
-    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+		<CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
+		<GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
 
-    <OutputPath>..\..\Launcher\pLMod\$(AssemblyName)\</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <AssemblyName>RedirectDebugLog</AssemblyName>
-    <RootNamespace>RedirectDebugLog</RootNamespace>
-  </PropertyGroup>
+		<OutputPath>..\..\Launcher\pLMod\$(AssemblyName)\</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<AssemblyName>RedirectDebugLog</AssemblyName>
+		<RootNamespace>RedirectDebugLog</RootNamespace>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Reference Include="Lawn">
-      <HintPath>..\..\..\WP_PGVZ\PlantGirlsVsZombies\Lawn.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\pLawnModLoader\pLawnModLoader.csproj" >
+			<Private>false</Private>
+		</ProjectReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\pLawnModLoader_Shared\pLawnModLoader_Shared.csproj">
-      <Private>false</Private>
-    </ProjectReference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Lawn">
+			<HintPath>..\..\..\WP_PGVZ\PlantGirlsVsZombies\Lawn.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="$(AssemblyName).txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="$(AssemblyName).txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
-  <Target Name="CleanExtraFiles" AfterTargets="Build">
-    <ItemGroup>
-      <FilesToDelete Include="Lawn.pdb" />
-      <FilesToDelete Include="$(OutputPath)*.json" />
-      <FilesToDelete Include="$(OutputPath)*.xml" />
-    </ItemGroup>
-    <Delete Files="@(FilesToDelete)" />
-  </Target>
+	<Target Name="CleanExtraFiles" AfterTargets="Build">
+		<ItemGroup>
+			<FilesToDelete Include="Lawn.pdb" />
+			<FilesToDelete Include="$(OutputPath)*.json" />
+			<FilesToDelete Include="$(OutputPath)*.xml" />
+		</ItemGroup>
+		<Delete Files="@(FilesToDelete)" />
+	</Target>
 
 </Project>

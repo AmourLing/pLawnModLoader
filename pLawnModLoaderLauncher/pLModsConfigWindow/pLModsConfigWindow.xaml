@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="pLawnModLoaderLauncher.pLModsConfigWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -40,8 +40,7 @@
 
         <!--  布尔模板：复选框  -->
         <DataTemplate x:Key="BoolTemplate">
-            <CheckBox IsChecked="{Binding Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-              VerticalAlignment="Center"/>
+            <CheckBox VerticalAlignment="Center" IsChecked="{Binding Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </DataTemplate>
 
         <!--  对象模板：编辑按钮  -->
