@@ -1,9 +1,44 @@
-[Bb]in/
-[Oo]bj/
-*.user
-*.suo
+```csharp
+# Compiled files
+*.obj
+*.exe
+*.dll
+*.pdb
+*.userprefs
+
+# Build outputs
+bin/
+obj/
+Debug/
+Release/
+
+# Dependencies
+packages/
+node_modules/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
 .vs/
-Launcher/
-.gitattributes
-get_Launcher_md5.bat
-ScaryDream
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*~
+```
+
+Wait, let me reconsider. The added files are just source code (.cs), project file (.csproj), and a text file (.txt). These appear to be legitimate source files, not build artifacts or dependencies that should be ignored.
+
+(empty)
