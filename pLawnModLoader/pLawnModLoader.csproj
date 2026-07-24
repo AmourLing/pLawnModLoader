@@ -16,6 +16,15 @@
 		<PackageReference Include="Lib.Harmony" Version="2.4.2" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Reference Include="Lawn">
+	    <HintPath>..\..\WP_PGVZ\PlantGirlsVsZombies\Lawn.dll</HintPath>
+	  </Reference>
+	  <Reference Include="MonoGame.Framework">
+	    <HintPath>..\..\WP_PGVZ\PlantGirlsVsZombies\MonoGame.Framework.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
 	<Import Project="..\pLawnModLoader_Shared\pLawnModLoader_Shared.projitems" Label="Shared" />
 
 </Project>

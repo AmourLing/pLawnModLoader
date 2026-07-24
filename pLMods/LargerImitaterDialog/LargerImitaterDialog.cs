@@ -11,12 +11,12 @@ namespace LargerImitaterDialog
 {
     public class LargerImitaterDialogConfig
     {
-        public int ImitaterSeedCount { get; set; } = 14;
+        public int ImitaterSeedCount { get; set; } = 16;
     }
 
     public static class pLMods
     {
-        public static int NewImitaterSeedCount = 14;
+        public static int NewImitaterSeedCount = 16;
 
         public static void Apply()
         {

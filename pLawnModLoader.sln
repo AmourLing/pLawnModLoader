@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.37012.4
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.12021.73
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pLawnModLoader", "pLawnModLoader\pLawnModLoader.csproj", "{C3E7A18B-16F5-7237-BF90-4C1C392B7B21}"
 EndProject
@@ -26,6 +26,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LargerZenGarden", "pLMods\LargerZenGarden\LargerZenGarden.csproj", "{D33ABFD2-04D1-7CF6-CA42-E165C2C2A016}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "pLawnModLoader_Shared", "pLawnModLoader_Shared\pLawnModLoader_Shared.shproj", "{AAF45295-F341-46D0-BD7B-3E262D758548}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleModPlant_FirePea", "pLMods\ExampleModPlant_FirePea\ExampleModPlant_FirePea.csproj", "{375A787B-AB15-4AF0-5969-30AE629F0C08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperGatlingPlant", "pLMods\SuperGatlingPlant\SuperGatlingPlant.csproj", "{0632BE05-396A-5165-400A-4610D65B1778}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,14 @@ Global
 		{D33ABFD2-04D1-7CF6-CA42-E165C2C2A016}.Debug|x64.Build.0 = Debug|x64
 		{D33ABFD2-04D1-7CF6-CA42-E165C2C2A016}.Release|x64.ActiveCfg = Release|x64
 		{D33ABFD2-04D1-7CF6-CA42-E165C2C2A016}.Release|x64.Build.0 = Release|x64
+		{375A787B-AB15-4AF0-5969-30AE629F0C08}.Debug|x64.ActiveCfg = Debug|x64
+		{375A787B-AB15-4AF0-5969-30AE629F0C08}.Debug|x64.Build.0 = Debug|x64
+		{375A787B-AB15-4AF0-5969-30AE629F0C08}.Release|x64.ActiveCfg = Release|x64
+		{375A787B-AB15-4AF0-5969-30AE629F0C08}.Release|x64.Build.0 = Release|x64
+		{0632BE05-396A-5165-400A-4610D65B1778}.Debug|x64.ActiveCfg = Debug|x64
+		{0632BE05-396A-5165-400A-4610D65B1778}.Debug|x64.Build.0 = Debug|x64
+		{0632BE05-396A-5165-400A-4610D65B1778}.Release|x64.ActiveCfg = Release|x64
+		{0632BE05-396A-5165-400A-4610D65B1778}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +83,8 @@ Global
 		{92458C08-45C0-5CA0-F16E-F5D53BB4308E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{74D39806-3B88-AF85-ABD4-6CD7B58A4950} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{D33ABFD2-04D1-7CF6-CA42-E165C2C2A016} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{375A787B-AB15-4AF0-5969-30AE629F0C08} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{0632BE05-396A-5165-400A-4610D65B1778} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {252B24A4-F2A6-472D-A16B-6A173C702DDE}

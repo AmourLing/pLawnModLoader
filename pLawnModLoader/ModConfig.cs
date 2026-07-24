@@ -1,14 +1,11 @@
 using System.IO;
 using System.Text.Json;
-using pLawnModLoader_Shared;
 
-namespace pLawnModLoader
+namespace pLawnModLoader_Shared
 {
     public static class ModConfig
     {
-        private static readonly object _lock = new object();
-
-        public static T? GetConfig<T>(string modName) where T : class, new()
+        public static T GetConfig<T>(string modName) where T : class, new()
         {
             string configPath = Path.Combine(
                 Directory.GetCurrentDirectory(),
@@ -24,13 +21,9 @@ namespace pLawnModLoader
                     string json = File.ReadAllText(configPath);
                     return JsonSerializer.Deserialize<T>(json);
                 }
-                catch
-                {
-                    // 解析失败，返回默认值
-                }
+                catch { }
             }
 
-            // 不存在或解析失败，创建默认并保存
             var defaultConfig = new T();
             SaveConfig(modName, defaultConfig);
             return defaultConfig;
